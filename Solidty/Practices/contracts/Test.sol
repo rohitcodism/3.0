@@ -7,4 +7,8 @@ contract Test {
   function Getter() public view returns(uint){
     return x;
   }
+
+  function Setter(uint _x) public {
+    x = _x;
+  }
 }
