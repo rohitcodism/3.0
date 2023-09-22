@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@remix-project/remixd": "^0.6.17"
+    "@remix-project/remixd": "^0.6.17",
+    "dotenv": "^16.3.1"
   }
 }
