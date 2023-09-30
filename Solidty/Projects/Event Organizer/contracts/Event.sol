@@ -38,6 +38,57 @@ contract eventContract {
     }
 
     /**
+     * @dev Updates the details of an event in the `eventList` mapping.
+     * @param eventId The ID of the event to be updated.
+     * @param _newName The new name of the event.
+     * @param _newDate The new date of the event in Unix timestamp format.
+     * @param _newPrice The new price of each ticket for the event.
+     * @param _newSeats The new total number of seats available for the event.
+     */
+    /**
+     * @dev Updates the details of an event in the `eventList` mapping.
+     * @param eventId The ID of the event to be updated.
+     * @param _newName The new name of the event.
+     * @param _newDate The new date of the event in Unix timestamp format.
+     * @param _newPrice The new price of each ticket for the event.
+     * @param _newSeats The new total number of seats available for the event.
+     */
+    function updateEvent(uint eventId, string memory _newName, uint _newDate, uint _newPrice, uint _newSeats) public {
+        // Check if the event with the given `eventId` exists in the `eventList` mapping.
+        require(bytes(eventList[eventId].name).length != 0, "Event doesn't exist !!");
+
+        // Check if the event's date is in the future.
+        require(eventList[eventId].date > block.timestamp, "Event is ended !!");
+
+        // Check if the caller of the function is the organizer of the event.
+        require(eventList[eventId].organizer == msg.sender, "You are not the organizer !!");
+
+        // Update the event's details in the `eventList` mapping.
+        Event storage eventToUpdate = eventList[eventId];
+
+        // Update the event's name if a new name is provided.
+        if (bytes(_newName).length != 0) {
+            eventToUpdate.name = _newName;
+        }
+
+        // Update the event's date if a new date is provided.
+        if (_newDate != 0) {
+            eventToUpdate.date = _newDate;
+        }
+
+        // Update the event's price if a new price is provided.
+        if (_newPrice != 0) {
+            eventToUpdate.price = _newPrice;
+        }
+
+        // Update the event's seats if new seats are provided.
+        if (_newSeats != 0) {
+            eventToUpdate.seats = _newSeats;
+            eventToUpdate.vacantSeats = _newSeats;
+        }
+    }
+
+    /**
      * @dev Allows users to purchase tickets for a specific event.
      * @param id The ID of the event for which the user wants to buy tickets.
      * @param quantity The number of tickets the user wants to purchase.
@@ -76,4 +127,21 @@ contract eventContract {
         // Add the transferred tickets to the new attendee's account
         tickets[attendee][event_id] += quantity;
     }
-}
+
+    /**
+     * @dev Cancels the purchased tickets for a specific event and refunds the user.
+     * @param _event The ID of the event for which the tickets are being canceled.
+     * @param quantity The number of tickets being canceled.
+     */
+    function cancelTicket(uint _event, uint quantity) payable public {
+        require(eventList[_event].date != 0, "Invalid event !!");
+        require(eventList[_event].date > block.timestamp, "Invalid event !!");
+        require(quantity > 0, "Ticket quantity can't be 0.");
+
+        tickets[msg.sender][_event] -= quantity;
+
+        address payable user = payable(msg.sender);
+        uint amount = eventList[_event].price * quantity;
+        user.transfer(amount);
+    }
+}    
