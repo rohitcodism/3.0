@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.19;
 
 contract Token {
@@ -21,7 +21,7 @@ contract Token {
         balances[_to] += _amount;
     }
 
-    function fetchBalance(address _to) public view returns(uint) {
-        return balances[_to];
+    function fetchBalance(address _account) public view returns(uint) {
+        return balances[_account];
     }
 }
