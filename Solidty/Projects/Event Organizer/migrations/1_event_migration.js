@@ -1,6 +1,5 @@
-const { event } = require("Event");
+const { event } = require("../build/contracts/eventContract.json");
 
-module.exports = function(_deployer) {
-  // Use deployer to state migration tasks.
+module.exports = (_deployer) => {
   _deployer.deploy(event);
 };
