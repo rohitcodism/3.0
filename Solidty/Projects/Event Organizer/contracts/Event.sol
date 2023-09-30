@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.19;
+
+pragma solidity ^0.8.0;
 
 contract eventContract {
     struct Event{
@@ -26,5 +27,19 @@ contract eventContract {
         eventList[nextId] = Event(msg.sender, _name, _date, _price, _seats, _seats);
 
         nextId++;
+    }
+
+        function buyTicket(uint id, uint quantity) payable public  {
+        require(eventList[id].date != 0, "Event does not exist !!");
+
+        require(eventList[id].date > block.timestamp, "Event is ended !!");
+
+        Event storage _event = eventList[id];
+
+        require(msg.value == _event.price, "Ether is not enough !!");
+
+        require(_event.seats >= quantity, "Seats Unavailable !!");
+
+        _event.vacantSeats -= quantity;
     }
 }
