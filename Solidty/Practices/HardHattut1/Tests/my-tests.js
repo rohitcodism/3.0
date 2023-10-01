@@ -1,5 +1,8 @@
-import { expect } from "chai";
-import { ethers } from "hardhat";
+const { expect } = require("chai");
+const hre = require("hardhat");
+const { ethers } = require("hardhat");
+
+
 describe("Token", () => {
     it("Deployment should assign the total supply of tokens to the owner", async () => {
         const [owner] = await ethers.getSigners();
