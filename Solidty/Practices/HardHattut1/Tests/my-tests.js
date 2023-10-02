@@ -48,6 +48,21 @@ describe("Token", () => {
                 await expect(hardhatToken.connect(address1).transfer(Owner.address, 1)).to.be.revertedWith("Insufficient Balance !!!");
                 await expect(await hardhatToken.fetchBalance(Owner.address)).to.equal(initialOwnerBalance);
             })
+
+            it("Should update balance correctly.", async () => {
+                const initialOwnerBalance = await hardhatToken.fetchBalance(Owner.address);
+                await hardhatToken.transfer(address1.address, 10);
+                await hardhatToken.transfer(address2.address, 10);
+
+                const finalOwnerBalance = await hardhatToken.fetchBalance(Owner.address);
+                expect(finalOwnerBalance).to.equal(initialOwnerBalance-20);
+
+                const balanceX = await hardhatToken.fetchBalance(address1.address);
+                expect(balanceX).to.equal(10);
+
+                const balanceY = await hardhatToken.fetchBalance(address2.address);
+                expect(balanceY).to.equal(10);
+            })
         })
     })
 })
