@@ -2,49 +2,47 @@ const { expect } = require("chai");
 const hre = require("hardhat");
 const { ethers } = require("hardhat");
 
-
 describe("Token", () => {
-    it("Deployment should assign the total supply of tokens to the owner", async () => {
-        const [owner] = await ethers.getSigners();
-        console.log("Owner:", owner);
+    let Token;
+    let hardhatToken;
+    let Owner;
+    let address1;
+    let address2;
+    let addrs;
 
-        const Token = await ethers.getContractFactory("Token");
-        const hardhatToken = await Token.deploy();
+    beforeEach(async () => {
+        Token = await ethers.getContractFactory("Token");
+        [Owner, address1, address2, ...addrs] = await ethers.getSigners(); 
+        hardhatToken = await Token.deploy();
+    })
 
-        const ownerBalance = await hardhatToken.fetchBalance(owner.address);
-        console.log("Owner Balance:", ownerBalance.toString());
+    describe("Deployment", () => {
+        it("Should set the right owner", async () => {
+            expect(await hardhatToken.owner()).to.equal(Owner.address);
+            console.log(Owner.address)
+        })
 
-        expect(await hardhatToken.totalSupply()).to.equal(ownerBalance);
-    });
+        it("Should assign the total supply of tokens to the owner", async () => {
+            const ownerBalance = await hardhatToken.fetchBalance(Owner.address);
 
-    it("Specified amount tokens should be transferred between accounts", async () => {
-        const [owner, addr1, addr2] = await ethers.getSigners();
-        console.log("Owner:", owner);
-        console.log("Sender:", addr1);
-        console.log("Receiver:", addr2);
+            expect(ownerBalance).to.equal(10000);
+        })
 
-        // deploying contract
-        const Token = await ethers.getContractFactory("Token");
-        const hardhatToken = await Token.deploy();
+        describe("Transactions", () => {
+            it("Should transfer the specified amount", async() => {
+                await hardhatToken.transfer(address1.address, 10);
+                const balance1 = await hardhatToken.fetchBalance(address1.address);
+                expect(balance1).to.equal(10);
 
-        // transferring 10 tokens to receiver
-        await hardhatToken.transfer(addr2.address, 10);
+                await hardhatToken.transfer(address2.address, 5);
+                const balance2 = await hardhatToken.fetchBalance(address2.address);
+                expect(balance2).to.equal(5);
 
-        // checking balance of receiver
-        const balance2 = await hardhatToken.fetchBalance(addr2.address);
-
-        // checking if balance is 10
-        expect(balance2).to.equal(10);
-
-        // transferring 5 tokens to sender
-        await hardhatToken.transfer(addr1.address, 5);
-
-        // checking balance of sender
-        const balance1 = await hardhatToken.fetchBalance(addr1.address);
-
-        // checking if balance is 5
-        expect(balance1).to.equal(5);
-
-    });
+                await hardhatToken.connect(address1).transfer(address2.address, 5);
+                const balanceX = await hardhatToken.fetchBalance(address2.address);
+                expect(balanceX).to.equal(10);
+            })
+        })
+    })
 })
 

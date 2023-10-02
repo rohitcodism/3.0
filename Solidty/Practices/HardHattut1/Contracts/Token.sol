@@ -15,7 +15,7 @@ contract Token {
     }
 
     function transfer(address _to, uint _amount) public {
-        require(msg.sender == owner, "Only owner can transfer tokens !!");
+        // require(msg.sender == owner, "Only owner can transfer tokens !!");
         require(balances[msg.sender] >= _amount, "Insufficient Balance !!!");
         balances[msg.sender] -= _amount;
         balances[_to] += _amount;
