@@ -42,6 +42,12 @@ describe("Token", () => {
                 const balanceX = await hardhatToken.fetchBalance(address2.address);
                 expect(balanceX).to.equal(10);
             })
+
+            it("Fail!! if sender doesn't have enough tokens.", async () => {
+                const initialOwnerBalance = await hardhatToken.fetchBalance(Owner.address);
+                await expect(hardhatToken.connect(address1).transfer(Owner.address, 1)).to.be.revertedWith("Insufficient Balance !!!");
+                await expect(await hardhatToken.fetchBalance(Owner.address)).to.equal(initialOwnerBalance);
+            })
         })
     })
 })
