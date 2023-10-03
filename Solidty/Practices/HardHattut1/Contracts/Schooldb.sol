@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 contract SchoolData {
 
-    address Owner;
+    address public Owner;
 
     struct Student {
         string name;
@@ -51,7 +51,7 @@ contract SchoolData {
     }
 
     function deleteStudent(uint _id) public {
-        require(msg.sender = Owner, "Only admins can delete the details of a student.");
+        require(msg.sender == Owner, "Only admins can delete the details of a student.");
         require(StudentList[_id].roll_number != 0, "Student does not exist");
         delete StudentList[_id];
     }
