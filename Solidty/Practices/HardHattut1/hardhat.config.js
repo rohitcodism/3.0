@@ -1,7 +1,7 @@
 /** @type import('hardhat/config').HardhatUserConfig */
 require("@nomiclabs/hardhat-waffle");
 
-const ALCHEMY_API_KEY = "vuQEnypEgHUJXCJpBONUm2kCm2W_N4JI";
+const ALCHEMY_API_KEY = "wbQ0bmiMvXFsfH24_JLtPFDp8TNm_yuN";
 
 const SEPOLIA_PRIVATE_KEY = "386b47ccf0bf2ecf263125b5ba313980babe827262022b98f29ecc689339f1b7"
 module.exports = {
