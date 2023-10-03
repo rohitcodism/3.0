@@ -72,6 +72,41 @@
       "artifacts": [
         "console"
       ]
+    },
+    "C:\\Users\\user\\OneDrive\\Documents\\GitHub\\3.0\\Solidty\\Practices\\HardHattut1\\Contracts\\Schooldb.sol": {
+      "lastModificationDate": 1696339123463,
+      "contentHash": "d8203d4217ad5ac6651d9076658c1452",
+      "sourceName": "Contracts/Schooldb.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "SchoolData"
+      ]
     }
   }
 }
