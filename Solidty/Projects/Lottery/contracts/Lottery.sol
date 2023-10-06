@@ -18,4 +18,10 @@ contract Lottery {
         require(msg.sender == manager, "Only manager can check the contract balance.");
         return address(this).balance;
     }
+
+    function winnerChcker() public view returns(address){
+        require(players.length >= 3, "Not enough participants.");
+        uint Winner = uint256(keccak256(abi.encodePacked(block.timestamp, blockhash(block.number-1)))) % players.length;
+        return players[Winner];
+    }
 }
