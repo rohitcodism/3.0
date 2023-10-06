@@ -26,7 +26,7 @@ contract Lottery {
         return players[Winner];
     }
 
-        function transferPrize() public payable {
+    function transferPrize() public payable {
         winner = winnerChcker();
         winner.transfer(address(this).balance);
         
