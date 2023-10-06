@@ -27,6 +27,7 @@ contract Lottery {
     }
 
     function transferPrize() public payable {
+        require(msg.sender == manager, "Only manager can transfer the prize amount.")
         winner = winnerChcker();
         winner.transfer(address(this).balance);
         
@@ -37,6 +38,14 @@ contract Lottery {
     }
 
     function fetchWinnerBalance() public view returns(uint){
+        require(msg.sender == winner, "Only winner can check his balance.")
         return winner.balance;
+    }
+
+    function resetLottery() public {
+        require(msg.sender == manager, "Only manager can reset the lottery.");
+        while(players[players.length-1] != 0){
+            players.pop();
+        }
     }
 }
