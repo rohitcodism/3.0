@@ -4,6 +4,7 @@ pragma solidity 0.8.19;
 contract Lottery {
     address public manager; // manager
     address payable[] public players; // participants
+    address payable winner; // winner global
 
     constructor() {
         manager = msg.sender; // global variable
@@ -23,5 +24,19 @@ contract Lottery {
         require(players.length >= 3, "Not enough participants.");
         uint Winner = uint256(keccak256(abi.encodePacked(block.timestamp, blockhash(block.number-1)))) % players.length;
         return players[Winner];
+    }
+
+        function transferPrize() public payable {
+        winner = winnerChcker();
+        winner.transfer(address(this).balance);
+        
+    }
+
+    function winnerAnnouncer() public view returns(address){
+        return winner;
+    }
+
+    function fetchWinnerBalance() public view returns(uint){
+        return winner.balance;
     }
 }
