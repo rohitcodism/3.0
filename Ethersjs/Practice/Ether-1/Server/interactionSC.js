@@ -2,9 +2,9 @@
 import { ethers } from "ethers";
 const provider = new ethers.JsonRpcProvider(`https://sepolia.infura.io/v3/8e7e02fcec8c42109e56ff2e933c552a`)
 
-const walletAddress = `0xd70b78270c93108224dbb60e21a9a76d3e9c963b`
+export const walletAddress = `0xd70b78270c93108224dbb60e21a9a76d3e9c963b`
 
-const walletABI = [
+export const walletABI = [
 	{
 		"inputs": [
 			{
