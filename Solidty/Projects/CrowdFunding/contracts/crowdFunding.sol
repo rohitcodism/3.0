@@ -11,7 +11,7 @@ contract CrowdFunding {
     uint public raisedAmount;
     uint public numberOfContributors;
 
-    struct Request {
+    struct Request { // structure of the request
         string description;
         address payable recipient;
         uint amount;
@@ -68,6 +68,23 @@ contract CrowdFunding {
         newRequest.amount = amount;
         newRequest.completed = false;
         newRequest.numberofVoters = 0;
+    }
+
+    function voteRequest(uint _reqnum) public {
+        require(Contributors[msg.sender] != 0, "Only contributors can vote for the request.");
+        Request storage thisRequest = requests[_reqnum];
+        require(thisRequest.Voters[msg.sender]==false, "You have already voted for the request.");
+        thisRequest.Voters[msg.sender] = true;
+        thisRequest.numberofVoters++;
+    }
+
+    function makePayment(uint _numreq) public onlyManager(){
+        require(raisedAmount>=target, "Target no met yet.");
+        Request storage thisRequest = requests[_numreq];
+        require(thisRequest.completed == false, "This program is already completed.");
+        require(thisRequest.numberofVoters>numberOfContributors/2, "You can't make the payment, minor voting.");
+        thisRequest.recipient.transfer(thisRequest.amount);
+        thisRequest.completed = true;
     }
 
 }
