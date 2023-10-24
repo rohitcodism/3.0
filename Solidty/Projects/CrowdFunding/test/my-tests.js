@@ -76,4 +76,15 @@ describe("CrowdFunding", function () {
         expect(await crowdF.getContractBalance()).to.equal(0);
     })
 
+    it("Should create a new request for contribution.", async () => {
+        await crowdF.createRequests("Buy a laptop", manager.address, 2000);
+        const request = await crowdF.requests(0);
+        expect(request.description).to.equal("Buy a laptop");
+    })
+
+    it("Should prevent the vote for a non-contributor.", async () => {
+        await crowdF.createRequests("Buy a laptop", manager.address, 2000);
+        expect(await crowdF.voteRequest(0)).to.be.revertedWith("Only contributors can vote for the request.")
+    })
+
 });
